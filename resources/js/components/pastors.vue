@@ -225,7 +225,7 @@
 
 </style>
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row mt-4">
             <div class="col-md-4 " v-for="user in users.data" :key="user.id">
 

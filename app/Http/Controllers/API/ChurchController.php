@@ -56,6 +56,12 @@ class ChurchController extends Controller
 
     }
 
+    public function getChurches()
+    {
+        $churches = Ministries::where('week', 0)->get();
+        return ['churches'=>$churches];
+    }
+
     public function update(Request $request)
     {
         $user = auth()->user()->id;

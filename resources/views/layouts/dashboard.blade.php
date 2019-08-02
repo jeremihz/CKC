@@ -11,7 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'CKC Church') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -213,74 +213,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </p>
                         </router-link>
                     </li>
-                     <li class="nav-item">
-                        <router-link to="/calendar-component" class="nav-link">
-                            <i class="fa fa-calendar-week teal"></i>
-                            <p>
-                              Calender
-                            </p>
-                        </router-link>
-                    </li>
-
-                  
-                    <li class="nav-item">
-                        <router-link to="/Upload" class="nav-link">
-                            <i class="fa fa-upload teal"></i>
-                            <p>
-                              uploads
-                            </p>
-                        </router-link>
-                    </li>
-
-                    <li class="nav-item">
-                        <router-link to="/contributionpastor" class="nav-link">
-                            <i class="fa fa-upload teal"></i>
-                            <p>
-                              pastors
-                            </p>
-                        </router-link>
-                    </li>
-
                     
-
-                    <li class="nav-item">
-                        <router-link to="/church" class="nav-link">
-                            <i class="fa fas fa-church cyan nav-icon"></i>
-                            <p>
-                               My Ministry
-                            </p>
-                        </router-link>
-                    </li>
-                    <li class="nav-item has-treeview menu ">
-                        <a href="#" class="nav-link ">
-                            <i class="nav-icon fa fa-gears green"></i>
-                            <p>
-                                Contributions
-                                <i class="right fa fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                        <router-link to="/contribution" class="nav-link">
-                            <i class="nav-icon fas fa-hand-holding-usd green"></i>
-                            <p>
-                               Targets
-                            </p>
-                        </router-link>
-                    </li>
-                            <li class="nav-item">
-                        <router-link to="/contributiondetails" class="nav-link">
-                            <i class="nav-icon fas fa-coins green"></i>
-                            <p>
-                               Contributions
-                            </p>
-                        </router-link>
-                    </li>
-
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
+                    @can('isPastor')
+                      <li class="nav-item">
                         <router-link to="/membership" class="nav-link">
                             <i class="nav-icon fas fa-file-alt blue"></i>
                             <p>
@@ -288,6 +223,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </p>
                         </router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link to="/contributionpastor" class="nav-link">
+                            <i class="fa fa-upload teal"></i>
+                            <p>
+                              Contribution
+                            </p>
+                        </router-link>
+                    </li>
+                    @endcan
                     @can('isGuest')
                        <li class="nav-item">
                                 <router-link to="/claims" class="nav-link">
@@ -305,10 +249,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     @can('isAdmin')
                     <li class="nav-item">
+                                <router-link to="/claims-admin" class="nav-link">
+                                    <i class="fa fa-money nav-icon"></i>
+                                    <p>Claims</p>
+                                </router-link>
+                            </li>
+                    <li class="nav-item">
                         <router-link to="/pastors" class="nav-link">
                             <i class="nav-icon fas fa-user-tie indigo"></i>
                             <p>
                                All users profiles
+                            </p>
+                        </router-link>
+                    </li>
+
+                    <li class="nav-item">
+                        <router-link to="/campmeeting" class="nav-link">
+                            <i class="nav-icon fas fa-campground cyan"></i>
+                            <p>
+                                Camp Meeting
                             </p>
                         </router-link>
                     </li>
@@ -345,12 +304,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link to="/claims-admin" class="nav-link">
-                                    <i class="fa fa-money nav-icon"></i>
-                                    <p>Claims</p>
-                                </router-link>
-                            </li>
-                            <li class="nav-item">
                                 <router-link to="/Ministries" class="nav-link">
                                     <i class="nav-icon fas fa-church cyan"></i>
                                     <p>
@@ -360,6 +313,58 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </li>
 
                         </ul>
+                    </li>
+                    <li class="nav-item has-treeview menu ">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fa fa-gears green"></i>
+                            <p>
+                                Contributions
+                                <i class="right fa fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                        <router-link to="/contribution" class="nav-link">
+                            <i class="nav-icon fas fa-hand-holding-usd green"></i>
+                            <p>
+                               Targets
+                            </p>
+                        </router-link>
+                    </li>
+                            <li class="nav-item">
+                        <router-link to="/contributiondetails" class="nav-link">
+                            <i class="nav-icon fas fa-coins green"></i>
+                            <p>
+                               Contributions
+                            </p>
+                        </router-link>
+                    </li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/church" class="nav-link">
+                            <i class="fa fas fa-church cyan nav-icon"></i>
+                            <p>
+                               My Ministry
+                            </p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/Upload" class="nav-link">
+                            <i class="fa fa-upload teal"></i>
+                            <p>
+                              Uploads
+                            </p>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/calendar-component" class="nav-link">
+                            <i class="fa fa-calendar-week teal"></i>
+                            <p>
+                              Calender
+                            </p>
+                        </router-link>
                     </li>
                     @endcan
                     <li class="nav-item ">
@@ -394,7 +399,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <vue-progress-bar></vue-progress-bar>
                 <router-view></router-view>
                  <main class="py-4">
-            @yield('content')
+            {{-- @yield('content') --}}
         </main>
             </div><!-- /.container-fluid -->
         </div>

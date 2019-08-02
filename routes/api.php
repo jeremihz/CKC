@@ -50,4 +50,9 @@ Route::get('/churchdetails/{churchId}','API\ContributionController@show');
 Route::post('/contributionpastor','API\ContributionController@storepastor');
 Route::get('/mycontribution','API\ContributionController@mycontribution');
 Route::get('/mystats','API\ContributionController@getStats');
+Route::get('getChurches','API\ChurchController@getChurches');
+Route::post('/createmeeting','API\CampingController@store');
+Route::get('getWeekNumber','API\CampingController@index');
+Route::put('reset','API\CampingController@resetAll');
+Route::get('weekdetails/{week}','API\CampingController@show');
 

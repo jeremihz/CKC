@@ -3,7 +3,7 @@
     <div class="container">
         <div class="card  mt-5">
             <div class="card-header">
-                <h3 class="card-title"> {{this.form.name}} CHURCH MEMBERSHIP STATICAL</h3>
+                <h3 class="card-title"> {{this.form.name}} CHURCH MEMBERSHIP STATISTICS</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->

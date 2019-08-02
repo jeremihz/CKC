@@ -1,5 +1,5 @@
 <template>
-	<div class="container" id="app">
+	<div class="container-fluid" id="app">
 		<div class="row justify-content-center">
 	     <div class="col-md-12">
 	     	<div class="card card-default">

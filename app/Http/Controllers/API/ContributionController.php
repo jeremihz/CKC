@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Contribution;
-use App\ministries;
+use App\Ministries;
 use Auth;
 
 class ContributionController extends Controller
@@ -29,7 +29,7 @@ public function __construct()
 
     public function Admin()
     {
-    	$church = ministries::where('pastor', Auth::user()->id)->first();
+    	$church = Ministries::where('pastor', Auth::user()->id)->first();
     	$church_id = $church->id;
     	$Cont = Contribution::where('church_id', $church_id)->first();
     	$church_name = $church->name;
@@ -57,7 +57,7 @@ public function __construct()
             'amount' => 'required'
         ]);
 
-        $church_id = ministries::where('pastor', auth()->user()->id)->value('id');
+        $church_id = Ministries::where('pastor', auth()->user()->id)->value('id');
         $type = 'Contribution';
 
         return Contribution::create([
@@ -68,7 +68,7 @@ public function __construct()
     }
 
     public function getStats(){
-        $church_id = ministries::where('pastor', auth()->user()->id)->value('id');
+        $church_id = Ministries::where('pastor', auth()->user()->id)->value('id');
         $church_con = Contribution::where('church_id', $church_id)->where('type', 'Contribution')->get();
         $total_contributed = collect($church_con)->where('type', 'Contribution')->sum('amount');
         $target = Contribution::where('church_id', $church_id)->where('type', 'Target')->value('amount');
@@ -85,7 +85,7 @@ public function __construct()
     }
 
     public function mycontribution(){
-        $church_id = ministries::where('pastor', auth()->user()->id)->value('id');
+        $church_id = Ministries::where('pastor', auth()->user()->id)->value('id');
         $mycont = Contribution::where('church_id', $church_id)->where('type', 'Contribution')->get();
 
         return ['mycont'=> $mycont];
@@ -114,7 +114,7 @@ public function __construct()
             $church_con = Contribution::where('church_id', $Contribution['church_id'])->get();
             $total_contributed = collect($church_con)->where('type', 'Contribution')->sum('amount');
             $church_id = $Contribution['church_id'];
-            $church_name = ministries::where('id', $church_id)->value('name');
+            $church_name = Ministries::where('id', $church_id)->value('name');
 
             $church_target = Contribution::where('church_id', $Contribution['church_id'])->where('type', 'Target')->value('amount');
             $perc = ($total_contributed/$church_target)*100;

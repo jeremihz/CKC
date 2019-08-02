@@ -64,8 +64,10 @@ let routes = [
     { path: '/image-component', component: require('./components/ImageuploadComponent.vue').default },
      { path: '/upload', component: require('./components/ImageUploadComponent2.vue').default },
      { path: '/contributiondetails', component: require('./components/ContributionDetails.vue').default },
-     { path: '/contributionpastor', component: require('./components/contributionpastor.vue').default },
+     { path: '/contributionpastor', component: require('./components/Contributionpastor.vue').default },
      { path: '/church-contributions/:churchId', component: require('./components/ChurchContributions.vue').default },
+     { path: '/campmeeting', component: require('./components/CampMeeting.vue').default },
+    { path: '/weekdetails/:week', component: require('./components/CampDetails.vue').default },
     { path: '*', component: require('./components/NotFound.vue').default },
 ]
 const router = new VueRouter({

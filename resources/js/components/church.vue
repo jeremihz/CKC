@@ -1,6 +1,6 @@
 
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-4 mt-5" v-for="chur in church" :key="chur.id">
                 <div class="card card-primary card-outline">
