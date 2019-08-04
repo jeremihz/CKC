@@ -205,16 +205,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </p>
                         </router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link to="/profile" class="nav-link">
-                            <i class="nav-icon fa fa-user orange"></i>
-                            <p>
-                               My Profile
-                            </p>
-                        </router-link>
-                    </li>
                     
                     @can('isPastor')
+                    <li class="nav-item">
+                    <router-link to="/campmeeting" class="nav-link">
+                            <i class="nav-icon fas fa-campground cyan"></i>
+                            <p>
+                                Camp Meeting
+                            </p>
+                        </router-link></li>
                       <li class="nav-item">
                         <router-link to="/membership" class="nav-link">
                             <i class="nav-icon fas fa-file-alt blue"></i>
@@ -231,12 +230,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </p>
                         </router-link>
                     </li>
-                    <router-link to="/campmeeting" class="nav-link">
-                            <i class="nav-icon fas fa-campground cyan"></i>
+                        <li class="nav-item">
+                        <router-link to="/pastors" class="nav-link">
+                            <i class="nav-icon fas fa-user-tie indigo"></i>
                             <p>
-                                Camp Meeting
+                               All users profiles
                             </p>
                         </router-link>
+                    </li>
                     <li class="nav-item">
                                 <router-link to="/notice" class="nav-link">
                                     <i class="fa fa-signal nav-icon"></i>
@@ -274,14 +275,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <p>Claims</p>
                                 </router-link>
                             </li>
-                    <li class="nav-item">
-                        <router-link to="/pastors" class="nav-link">
-                            <i class="nav-icon fas fa-user-tie indigo"></i>
-                            <p>
-                               All users profiles
-                            </p>
-                        </router-link>
-                    </li>
 
                     <li class="nav-item">
                         <router-link to="/campmeeting" class="nav-link">
@@ -292,51 +285,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </router-link>
                     </li>
                    
+                    
                     <li class="nav-item has-treeview menu ">
                         <a href="#" class="nav-link ">
-                            <i class="nav-icon fa fa-gears green"></i>
-                            <p>
-                                Management
-                                <i class="right fa fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <router-link to="/users" class="nav-link ">
-                                    <i class="fa fa-users nav-icon indigo"></i>
-                                    <p>
-                                        Users
-                                    </p>
-                                </router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link to="/developers" class="nav-link">
-                                    <i class="nav-icon fas fa-laptop-code pink"></i>
-                                    <p>
-                                        Developer
-                                    </p>
-                                </router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link to="/communication" class="nav-link">
-                                    <i class="fa fa-comment nav-icon"></i>
-                                    <p>Communication</p>
-                                </router-link>
-                            </li>
-                            <li class="nav-item">
-                                <router-link to="/Ministries" class="nav-link">
-                                    <i class="nav-icon fas fa-church cyan"></i>
-                                    <p>
-                                        Ministries
-                                    </p>
-                                </router-link>
-                            </li>
-
-                        </ul>
-                    </li>
-                    <li class="nav-item has-treeview menu ">
-                        <a href="#" class="nav-link ">
-                            <i class="nav-icon fa fa-gears green"></i>
+                            <i class="nav-icon fa fa-hand-holding-usd green"></i>
                             <p>
                                 Contributions
                                 <i class="right fa fa-angle-left"></i>
@@ -366,21 +318,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <router-link to="/church" class="nav-link">
                             <i class="fa fas fa-church cyan nav-icon"></i>
                             <p>
-                               My Ministry
+                               Churches Data
                             </p>
                         </router-link>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <router-link to="/Upload" class="nav-link">
                             <i class="fa fa-upload teal"></i>
                             <p>
                               Uploads
                             </p>
                         </router-link>
+                    </li> --}}
+                    <li class="nav-item">
+                        <router-link to="/pastors" class="nav-link">
+                            <i class="nav-icon fas fa-user-tie indigo"></i>
+                            <p>
+                               All users profiles
+                            </p>
+                        </router-link>
                     </li>
                     <li class="nav-item has-treeview menu ">
                         <a href="#" class="nav-link ">
-                            <i class="nav-icon fa fa-gears green"></i>
+                            <i class="fa fa-calendar-week teal"></i>
                             <p>
                                 Events
                                 <i class="right fa fa-angle-left"></i>
@@ -406,7 +366,50 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                         </ul>
                     </li>
+                    <li class="nav-item has-treeview menu ">
+                        <a href="#" class="nav-link ">
+                            <i class="nav-icon fa fa-gears green"></i>
+                            <p>
+                                Management
+                                <i class="right fa fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <router-link to="/users" class="nav-link ">
+                                    <i class="fa fa-users nav-icon indigo"></i>
+                                    <p>
+                                        Users
+                                    </p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to="/communication" class="nav-link">
+                                    <i class="fa fa-comment nav-icon"></i>
+                                    <p>Communication</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to="/Ministries" class="nav-link">
+                                    <i class="nav-icon fas fa-church cyan"></i>
+                                    <p>
+                                        Add Churches
+                                    </p>
+                                </router-link>
+                            </li>
+
+                        </ul>
+                    </li>
                     @endcan
+
+                    <li class="nav-item">
+                        <router-link to="/profile" class="nav-link">
+                            <i class="nav-icon fa fa-user orange"></i>
+                            <p>
+                               My Profile
+                            </p>
+                        </router-link>
+                    </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('logout') }}"
                            onclick="event.preventDefault();

@@ -13,37 +13,23 @@
                     <!-- /.card-header -->
                     <div class="card-body p-0">
                         <div class="row" style="padding: 20px;">
-                            <div class="col-md-3" v-for="claim in claims" :key="claim.id">
-                                <!-- Widget: user widget style 2 -->
-                                <div class="card card-widget widget-user-2">
-                                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                                    <div class="widget-user-header bg-primary">
-                                        <!-- /.widget-user-image -->
-                                        <h3 class="widget-user-username">{{ claim.ministry_id }}</h3>
-                                        <h5 class="widget-user-desc">Nairobi</h5>
-                                    </div>
-                                    <div class="card-footer p-0">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link">
-                                                    Total Amount <span class="float-right badge bg-primary">{{ claim.total_claim}}</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link">
-                                                    No. Pastors <span class="float-right badge bg-info">5</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item" style="padding: 5px;">
-                                                <router-link :to="{path:'/claim_details/'+ claim.ministry_id}">
-                                                    <button type="button" class="btn btn-block btn-primary">
-                                                        Details
-                                                    </button>
-                                                </router-link>
-                                            </li>
-                                        </ul>
-                                    </div>
+                            <div class="col-lg-3 col-6" v-for="claim in claims" :key="claim.id">
+                                <!-- small card -->
+                                <div class="small-box bg-success">
+                                  <div class="inner">
+                                    <h3>Ksh {{ claim.total_claim}}</h3>
+
+                                    <h5>{{ claim.church_name }}</h5>
+                                    <small>{{ claim.church_location }}</small>
+                                  </div>
+                                  <div class="icon">
+                                    <i class="fas fa-church"></i>
+                                  </div>
+                                  <router-link :to="{path:'/claim_details/'+ claim.ministry_id}" class="small-box-footer" style="font-size:20px;">
+                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                  </router-link>
                                 </div>
+                              </div>
                                 <!-- /.widget-user -->
                             </div>
                         </div>

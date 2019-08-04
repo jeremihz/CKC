@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Claims;
+use App\User;
+use App\Ministries;
+use App\Calendar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -43,9 +46,29 @@ class ClaimDetailsController extends Controller
      */
     public function show($ministryId)
     {
-        $claims = Claims::where('ministry_id', $ministryId)->latest()->paginate(10);
+        $claims = Claims::where('church_id', $ministryId)->where('active', 1)->latest()->get();
+        $claimings = array();
 
-        return $claims;
+        foreach ($claims as $claim) {
+            $church_name = Ministries::where('id', $claim['church_id'])->value('name');
+            $event_name = Calendar::where('id', $claim['event_id'])->value('event_name');
+            $user_name = User::where('id',  $claim['user_id'])->value('name');
+
+            $clai = array(
+              'user_name'=> $user_name,
+              'amount'=>$claim['amount'],
+              'title'=>$claim['title'],
+              'from_start'=>$claim['from_start'],
+              'to_destination'=>$claim['to_destination'],
+              'journey'=>$claim['journey'],
+              'church_name'=>$church_name,
+              'event_name'=>$event_name
+            );
+
+            array_push($claimings, $clai);
+        }
+
+        return ['claimings'=>$claimings];
     }
 
     /**

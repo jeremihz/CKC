@@ -1,34 +1,34 @@
 
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4 mt-5" v-for="chur in church.data" :key="chur.id">
+            <div class="col-md-4 mt-5" v-for="chur in church" :key="chur.id">
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
-                        <h3 class="profile-username text-center"><b>{{chur.name}}</b></h3>
+                        <h3 class="profile-username text-center"><b>{{chur.church_name}}</b></h3>
                         <p class="text-muted text-center">{{chur.location}}</p>
 
                         <ul class="list-group list-group-unbordered mb-3">
                             <li class="list-group-item">
-                                <b> Members Monthly statistical</b> <a class="float-right"></a>
+                                <b>Total members</b> <a class="float-right">{{chur.total_members}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>New Members</b> <a class="float-right">{{chur.new_members}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Deregestered Members</b> <a class="float-right">{{chur.dropped_members}}</a>
                             </li>
 
-
                         </ul>
-
-                        <router-link :to="{path:'/church_details/'+ chur.id}">
-                            <button type="button" class="btn btn-block btn-primary" style="margin-bottom: 5px;">
-                                Details
-                            </button>
-                        </router-link>
 
                     </div>
                     <!-- /.card-body -->
                 </div>
+
             </div>
         </div>
         <div class="card-footer">
-            <pagination :data="church" @pagination-change-page="getResults"></pagination>
+            <pagination :data="users" @pagination-change-page="getResults"></pagination>
         </div>
     </div>
 
@@ -40,11 +40,7 @@
         data() {
             return {
                 church: {},
-                form: new Form({
-                    id:'',
-                    name:'',
-                    location: '',
-                })
+
 
             }
         },
@@ -56,7 +52,7 @@
                     });
             },
             loadUsers() {
-                axios.get("api/church").then(({data}) => (this.church = data));
+                axios.get("api/church").then(({data}) => (this.church = data['members']));
             },
 
         },

@@ -4,7 +4,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Claim</h3>
+                        <h3 class="card-title">Church Contributions</h3>
                     </div>
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover">
@@ -17,7 +17,7 @@
                             <tbody>
                             <tr v-for="contr in churchCont" :key="contr.id">
                                 <td>{{ contr.created_at | myDate}}</td>
-                                <td>{{ contr.amount }}</td>
+                                <td>Ksh. {{ contr.amount }}</td>
                             </tr>
                             </tbody>
                         </table>

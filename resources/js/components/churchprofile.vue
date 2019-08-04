@@ -3,16 +3,20 @@
     <div class="container">
         <div class="card  mt-5">
             <div class="card-header">
-                <h3 class="card-title"> {{this.form.name}} CHURCH MEMBERSHIP STATISTICS</h3>
+                <h3 class="card-title"> CHURCH MEMBERSHIP STATISTICS</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
             <form role="form">
                 <div class="card-body">
                     <div class="form-group">
-                        <label >Name of the church</label>
-                        <input type="text" v-model="form.name" class="form-control"  placeholder="Enter church name" :class="{ 'is-invalid': form.errors.has('name') }">
-                        <has-error :form="form" field="name"></has-error>
+                        <label for="church">church</label>
+                        <select v-model="form.church" class="form-control" name="church" id="church"
+                                :class="{ 'is-invalid': form.errors.has('church') }">
+                            <option selected value="">--Select Church--</option>
+                            <option v-for="church in churches" :key="church.id" :value="church.id">{{ church.name}}</option>
+                        </select>
+                        <has-error :form="form" field="church"></has-error>
                     </div>
                     <div class="form-group">
                         <label >church members last month</label>
@@ -45,9 +49,10 @@
     export default {
         data(){
             return{
+                churches:{},
                 form: new Form({
                     id:'',
-                    name:'',
+                    church:'',
                     total:'',
                     new:'',
                     drop:'',
@@ -62,22 +67,27 @@
                this.form.put('api/members/')
                    .then(()=>{
                        Fire.$emit('AfterCreate');
+                       this.form.reset();
+                       swal.fire(
+                           'Updated!',
+                           'The message has been updated.',
+                           'success'
+                       )
                        this.$Progress.finish();
                    })
                    .catch(()=>{
                        this.$Progress.fail();
                    });
             },
+            loadUsers(){
+                axios.get("api/churches").then(({ data }) => ([this.churches = data['church']]));
 
+            },
 
         },
-        mounted() {
 
-            console.log('Component mounted.')
-        },
         created() {
-            axios.get("api/churches")
-                .then(({ data }) => (this.form.fill(data)));
+            this.loadUsers();
         }
     }
 </script>

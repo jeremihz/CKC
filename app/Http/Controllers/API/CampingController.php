@@ -19,7 +19,7 @@ class CampingController extends Controller
      */
     public function index()
     {
-        $weeks = Camping::select('week')->distinct()->get();
+        $weeks = Camping::where('active', 1)->select('week')->distinct()->get();
         $weekly = array();
 
         foreach ($weeks as $week) {
@@ -37,6 +37,7 @@ class CampingController extends Controller
     public function resetAll(){
         $guests = User::where('type', 'guest')->get();
         $churches = Ministries::all();
+        $campings = Camping::where('active', 1)->get();
 
         foreach ($churches as $church) {
             $chrch = Ministries::find($church['id']);
@@ -48,6 +49,12 @@ class CampingController extends Controller
             $user = User::find($guest['id']);
             $user->week = 0;
             $user->update();
+        }
+
+        foreach ($campings as $camping) {
+            $camp = Camping::find($camping['id']);
+            $camp->active = 0;
+            $camp->update();
         }
 
         return 'success';
@@ -119,10 +126,10 @@ class CampingController extends Controller
      */
     public function show($week)
     {
-        $church_ids = Camping::where('week', $week)->select('church_id')->distinct()->get();
+        $church_ids = Camping::where('week', $week)->select('church_id')->where('active', 1)->distinct()->get();
         $camps = array();
         foreach ($church_ids as $church_id) {
-            $camp = Camping::where('church_id', $church_id['church_id'])->get();
+            $camp = Camping::where('church_id', $church_id['church_id'])->where('active', 1)->get();
             $church_name = Ministries::where('id', $church_id['church_id'])->value('name');
             $church_location = Ministries::where('id', $church_id['church_id'])->value('location');
             $pastor_id = Ministries::where('id', $church_id['church_id'])->value('pastor');

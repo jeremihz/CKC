@@ -22,7 +22,7 @@ public function __construct()
      public function index()
     {
     
-        return Contribution::where('type', 'Target')->latest()->paginate(10);
+        return Contribution::where('type', 'Target')->where('active', 1)->latest()->paginate(10);
         
     }
 
@@ -113,6 +113,12 @@ public function __construct()
         return ['churches'=> $churches];
     }
 
+    public function loadChurches(){
+        $churches = Ministries::where('contribution', 0)->get();
+        
+        return ['churches'=> $churches];
+    }
+
     public function mycontribution(){
         // $church_id = Ministries::where('pastor', auth()->user()->id)->value('id');
         $myconts = Contribution::where('user_id', auth()->user()->id)->where('type', 'Contribution')->get();
@@ -144,18 +150,24 @@ public function __construct()
             'amount' => 'required'
         ]);
 
-        return Contribution::create([
+        $save = Contribution::create([
             'church_id' => $request['church'],
             'type' =>$request ['type'],
             'amount' => $request['amount'],
         ]);
+
+        $church = Ministries::find($request['church']);
+        $church->contribution = 1;
+        $church->update();
+
+        return 'success';
     }
 
     public function loadDetails(){
-        $Contributions = Contribution::select('church_id')->distinct()->get();
+        $Contributions = Contribution::select('church_id')->where('active', 1)->distinct()->get();
         $cont = array();
         foreach ($Contributions as $Contribution) {
-            $church_con = Contribution::where('church_id', $Contribution['church_id'])->get();
+            $church_con = Contribution::where('church_id', $Contribution['church_id'])->where('active', 1)->get();
             $total_contributed = collect($church_con)->where('type', 'Contribution')->sum('amount');
             $church_id = $Contribution['church_id'];
             $church_name = Ministries::where('id', $church_id)->value('name');
@@ -189,7 +201,7 @@ public function __construct()
      */
     public function show($churchId)
     {
-        $contributions = Contribution::where('church_id', $churchId)->where('type', 'Contribution')->get();
+        $contributions = Contribution::where('church_id', $churchId)->where('type', 'Contribution')->where('active', 1)->get();
         return ['contributions'=>$contributions];
     }
 

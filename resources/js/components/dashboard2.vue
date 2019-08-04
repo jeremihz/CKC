@@ -7,13 +7,14 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>{{dash['total_users']}}</h3>
+                                <h3>150</h3>
 
-                                <p>Total Users</p>
+                                <p>New Orders</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -21,13 +22,14 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>{{dash['total_churches']}}</h3>
+                                <h3>53<sup style="font-size: 20px">%</sup></h3>
 
-                                <p>Total Churches</p>
+                                <p>Bounce Rate</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
                             </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -35,13 +37,14 @@
                         <!-- small box -->
                         <div class="small-box bg-warning">
                             <div class="inner">
-                                <h3>{{dash['total_pastors']}}</h3>
+                                <h3>44</h3>
 
-                                <p>Total Pastors</p>
+                                <p>User Registrations</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
                             </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -49,28 +52,24 @@
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>{{dash['total_guest']}}</h3>
+                                <h3>65</h3>
 
-                                <p>Total Guests</p>
+                                <p>Unique Visitors</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>
                             </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
                 </div>
-                <div class="card" v-if="$gate.isAdmin()">
+                <div class="card">
                     <div class="card-body">
-                        <button type="button" class="btn btn-danger" @click="makeReset()">
+                        <button v-if="$gate.isAdmin()" type="button" class="btn btn-danger" @click="makeReset()">
                                 <i class="fa fa-retweet"></i>
                                 Reset
                             </button>
-                    </div>
-                </div>
-                <div class="row justify-content-center mt-5">
-                    <div class=" card col-md-8 ">
-                        <fullcalender  :plugins="calendarPlugins" :events="events"/>
                     </div>
                 </div>
             </div>
@@ -79,33 +78,13 @@
 </template>
 
 <script>
-    import FullCalendar from '@fullcalendar/vue'
-    import dayGridPlugin from '@fullcalendar/daygrid'
-    import interactionPlugin from '@fullcalendar/interaction'
     export default {
-
-        components: {
-           'fullcalender': FullCalendar // make the <FullCalendar> tag available
-        },
-
         data(){
             return{
-                calendarPlugins: [dayGridPlugin, interactionPlugin],
-                events: "",
-               dash:{},
+                details:{}
             }
         },
         methods: {
-
-            loadUsers() {
-                axios.get("api/dashboard").then(({ data }) => ([this.dash = data['data']]));
-            },
-            getEvents() {
-                axios
-                    .get("/api/calendar")
-                    .then(resp => (this.events = resp.data.data))
-                    .catch(err => console.log(err.response.data));
-            },
             makeReset(){
                 axios.put("/api/newyear").then( response => {
                     Fire.$emit('AfterCreate');
@@ -117,23 +96,9 @@
                         })
                 });
             }
-
         },
         created() {
-            this.loadUsers();
-            this.getEvents();
+            this.loadDetails();
         }
     }
 </script>
-<style lang="css">
-    @import "~@fullcalendar/core/main.css";
-    @import "~@fullcalendar/daygrid/main.css";
-
-    .fc-title {
-        color: #fff;
-    }
-
-    .fc-title:hover {
-        cursor: pointer;
-    }
-</style>

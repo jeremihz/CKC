@@ -46,8 +46,10 @@ Route::apiResources([
     'contribution'=>'API\ContributionController',
     // 'files' => 'ImageController',
 ]);
-
 Route::get('/claimdetails/{ministryId}','API\ClaimDetailsController@show');
+Route::get('/getchurches','API\ClaimsController@getChurches');
+
+
 // Route::get('/contribution','API\ContributionController@index');
 Route::get('/files','ImageController@index');
 Route::get('/download/{fileName}','ImageController@download');
@@ -58,6 +60,8 @@ Route::post('/contributionpastor','API\ContributionController@storepastor');
 Route::get('/mycontribution','API\ContributionController@mycontribution');
 Route::get('/mystats','API\ContributionController@getStats');
 Route::get('/mychurches','API\ContributionController@myChurches');
+Route::get('/loadchurches','API\ContributionController@loadChurches');
+Route::put('newyear','API\ResetController@newYear');
 
 Route::get('getChurches','API\ChurchController@getChurches');
 
@@ -70,4 +74,8 @@ Route::get('weekdetails/{week}','API\CampingController@show');
 Route::get('geteventweeks/{theevent}','API\CampingController@getEventWeeks');
 Route::get('campdetail','API\CampingController@getCampDetails');
 Route::get('getweek/{dk}','API\CampingController@getWeek');
+
+Route::apiResources(['dashboard'=>'API\DashboardController']);
+Route::get('churchDetails/{ministryId}','API\ChurchController@churchDetails');
+
 

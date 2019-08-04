@@ -74,6 +74,7 @@ let routes = [
     { path: '/weekdetails/:week', component: require('./components/CampDetails.vue').default },
     { path: '/viewevents', component: require('./components/ViewEvents.vue').default },
     { path: '*', component: require('./components/NotFound.vue').default },
+    {path: '/church_details/:ministryId', component: require('./components/ChurchDetails.vue').default},
 ]
 const router = new VueRouter({
 mode:'history',

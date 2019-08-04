@@ -8,7 +8,7 @@
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-primary" @click="newModal">
-                                <i class="fa fa-pencil"></i>
+                                <i class="fa fa-pen"></i>
                                 Compose
                             </button>
                         </div>
@@ -80,9 +80,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="church">type</label>
+                                <label for="church">Type</label>
                                 <select v-model="form.type" class="form-control" name="type" id="type"
-                                        :class="{ 'is-invalid': form.errors.has('type') }">
+                                        :class="{ 'is-invalid': form.errors.has('type') }" placeholder="Type">
                                     <option value="Target">Target</option>
                                     <option value="Contribution">Contribution</option>
                                 </select>
@@ -187,7 +187,7 @@
                 axios.get("api/contribution").then(({data}) => (this.contributions = data));
             },
             loadChurches() {
-                axios.get("api/ministries").then(({ data }) => ([this.churches = data['ministries']]));
+                axios.get("api/loadchurches").then(({ data }) => ([this.churches = data['churches']]));
             },
             postContribution() {
                 this.$Progress.start();
@@ -211,6 +211,7 @@
             this.loadContributions();
             Fire.$on('AfterCreate', () => {
                 this.loadContributions();
+                this.loadChurches();
             });
         }
     }

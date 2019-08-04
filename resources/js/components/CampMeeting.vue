@@ -75,7 +75,7 @@
                                 <select v-model="form.week" class="form-control" name="week" id="week"
                                         :class="{ 'is-invalid': form.errors.has('week') }">
                                     <option selected value="">--Select Week--</option>
-                                    <option v-for="we in eventWeeks" :key="we.id" :value="we.id">{{ we.week_name}}</option>
+                                    <option v-for="we in eventWeeks" :key="we['week']" :value="we['week']">{{ we.week_name}}</option>
                                 </select>
                                 <has-error :form="form" field="week"></has-error>
                             </div>

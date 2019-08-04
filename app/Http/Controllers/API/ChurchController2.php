@@ -23,13 +23,6 @@ class ChurchController extends Controller
      */
     public function index()
     {
-        return Ministries::latest()->paginate(9);
-    }
-    public function churchDetails($ministryId){
-        return members::where('church_id', $ministryId)->latest()->paginate(5);
-    }
-    public function details()
-    {
         $members = members::all();
         $membs = array();
 
@@ -52,8 +45,8 @@ class ChurchController extends Controller
             array_push($membs, $minis);
         }
         return ['members'=>$membs];
-
     }
+
 
     public function profile()
     {
@@ -61,6 +54,12 @@ class ChurchController extends Controller
         $church = Ministries::where('pastor', $user)->first();
         return $church;
 
+    }
+
+    public function getChurches()
+    {
+        $churches = Ministries::where('week', 0)->get();
+        return ['churches'=>$churches];
     }
 
     public function update(Request $request)
@@ -92,10 +91,5 @@ class ChurchController extends Controller
             $users = Ministries::latest()->paginate(10);
         }
         return $users;
-    }
-    public function getChurches()
-    {
-        $churches = Ministries::where('week', 0)->get();
-        return ['churches'=>$churches];
     }
 }

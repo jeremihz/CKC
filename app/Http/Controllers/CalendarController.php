@@ -17,7 +17,7 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        return CalendarResource::collection(Calendar::all());
+        return CalendarResource::collection(Calendar::where('status', 1)->get());
     }
 
 

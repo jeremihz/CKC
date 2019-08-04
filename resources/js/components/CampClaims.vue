@@ -4,11 +4,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Claim</h3>
+                        <h3 class="card-title">Claims</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-primary" @click="newModal">
-                                <i class="fa fa-pencil"></i>
+                                <i class="fa fa-pen"></i>
                                 Make Claim
                             </button>
                         </div>
@@ -19,21 +19,23 @@
                                     <th>Title</th>
                                     <th>Date</th>
                                     <th>Event</th>
+                                    <th>Church</th>
                                     <th>From</th>
                                     <th>To</th>
-                                    <th>Amount</th>
                                     <th>Journey</th>
+                                    <th>Amount</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="claim in claims" :key="claim.id">
                                     <td>{{ claim.title }}</td>
                                     <td>{{ claim.created_at | myDate }}</td>
-                                    <td>{{ claim.event }}</td>
+                                    <td>{{ claim.event_name }}</td>
+                                    <td>{{ claim.church_name }}</td>
                                     <td>{{ claim.from_start }}</td>
                                     <td>{{ claim.to_destination }}</td>
-                                    <td><span class="tag tag-success">{{ claim.amount }}</span></td>
                                     <td>{{ claim.journey }}</td>
+                                    <td><span class="tag tag-success">Ksh. {{ claim.amount }}</span></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -92,11 +94,19 @@
                                 <label for="event">Event</label>
                                 <select v-model="form.event" class="form-control" name="event" id="event"
                                         :class="{ 'is-invalid': form.errors.has('event') }">
-                                    <option selected value="">--Select Status--</option>
-                                    <option value="One">Event One</option>
-                                    <option value="Two">Event Two</option>
+                                    <option selected value="">--Select Event--</option>
+                                    <option v-for="act in Active" :key="act.id" :value="act.id">{{ act.event_name}}</option>
                                 </select>
                                 <has-error :form="form" field="event"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <label for="church">church</label>
+                                <select v-model="form.church" class="form-control" name="church" id="church"
+                                        :class="{ 'is-invalid': form.errors.has('church') }">
+                                    <option selected value="">--Select Church--</option>
+                                    <option v-for="church in mychurches" :key="church.id" :value="church.id">{{ church.name}}</option>
+                                </select>
+                                <has-error :form="form" field="church"></has-error>
                             </div>
                             <div class="form-group">
                                 <label for="amount">Amount</label>
@@ -130,11 +140,14 @@
             return {
                 editMode: false,
                 claims: {},
+                Active: {},
+            mychurches: {},
                 form: new Form({
                     title: '',
                     from_start: '',
                     to_destination: '',
                     event:'',
+                    church: '',
                     amount: '',
                     journey: '',
                 })
@@ -147,7 +160,13 @@
                 $('#ClaimModal').modal('show');
             },
             loadMyClaims() {
-                axios.get("api/claims").then(({data}) => (this.claims = data.data));
+                axios.get("api/claims").then(({data}) => (this.claims = data['claimings']));
+            },
+            assignedChurches() {
+                axios.get("api/getchurches").then(({data}) => (this.mychurches = data['churches']));
+            },
+            activeEvents(){
+                axios.get("/api/activeevents").then(({ data }) => (this.Active = data['events']));
             },
             makeClaim() {
                 this.$Progress.start();
@@ -168,8 +187,12 @@
         },
         created() {
             this.loadMyClaims();
+            this. activeEvents();
+            this.assignedChurches();
             Fire.$on('AfterCreate', () => {
                 this.loadMyClaims();
+                this. activeEvents();
+                this.assignedChurches();
             });
         }
     }
