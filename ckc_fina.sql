@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 02, 2019 at 10:31 PM
+-- Generation Time: Aug 03, 2019 at 11:52 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -77,8 +77,11 @@ INSERT INTO `books` (`id`, `uuid`, `title`, `cover`, `created_at`, `updated_at`)
 CREATE TABLE `calendars` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `event_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `theme` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `theme_song` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -87,8 +90,8 @@ CREATE TABLE `calendars` (
 -- Dumping data for table `calendars`
 --
 
-INSERT INTO `calendars` (`id`, `event_name`, `start_date`, `end_date`, `created_at`, `updated_at`) VALUES
-(4, 'keja d', '2019-07-04', '2019-07-27', '2019-07-27 04:50:48', '2019-07-27 05:11:23');
+INSERT INTO `calendars` (`id`, `event_name`, `theme`, `theme_song`, `start_date`, `end_date`, `status`, `created_at`, `updated_at`) VALUES
+(6, 'Tesla', 'Elon Musk', 'Muuuuuuuuuuuuuuuuuusk', '2019-08-04', '2019-08-08', 1, '2019-08-03 06:20:23', '2019-08-03 06:20:23');
 
 -- --------------------------------------------------------
 
@@ -113,7 +116,13 @@ CREATE TABLE `camping` (
 
 INSERT INTO `camping` (`id`, `week`, `user_id`, `church_id`, `name`, `phone`, `created_at`, `updated_at`) VALUES
 (2, 1, 24, 30, 'DERRICK OCHIENG', '0715810055', '2019-08-02 16:57:18', '2019-08-02 16:57:18'),
-(3, 1, 10, 30, 'mac morgan', '0715511302', '2019-08-02 16:57:18', '2019-08-02 16:57:18');
+(3, 1, 10, 30, 'mac morgan', '0715511302', '2019-08-02 16:57:18', '2019-08-02 16:57:18'),
+(4, 1, 6, 32, 'sweet', '0715511302', '2019-08-03 04:20:11', '2019-08-03 04:20:11'),
+(5, 1, 7, 32, 'mesweet', '0715511302', '2019-08-03 04:20:12', '2019-08-03 04:20:12'),
+(6, 1, 18, 33, 'wathera', '0712345678', '2019-08-03 04:20:21', '2019-08-03 04:20:21'),
+(7, 1, 11, 33, 'townhouse', '0715511302', '2019-08-03 04:20:21', '2019-08-03 04:20:21'),
+(8, 2, 7, 35, 'mesweet', '0715511302', '2019-08-03 04:56:11', '2019-08-03 04:56:11'),
+(9, 2, 11, 35, 'townhouse', '0715511302', '2019-08-03 04:56:11', '2019-08-03 04:56:11');
 
 -- --------------------------------------------------------
 
@@ -365,10 +374,10 @@ CREATE TABLE `ministries` (
 INSERT INTO `ministries` (`id`, `name`, `location`, `pastor`, `phone`, `week`, `created_at`, `updated_at`) VALUES
 (30, 'jeremiah', 'kenya', 9, NULL, 1, '2019-07-28 10:52:05', '2019-08-02 16:57:18'),
 (31, 'jeremih', 'kenya', 8, NULL, 0, '2019-07-28 10:57:14', '2019-07-28 10:57:14'),
-(32, 'sda nakuru', 'nakuru', 8, NULL, 0, '2019-07-29 10:56:07', '2019-07-29 10:56:07'),
-(33, 'nairobi pariish', 'eldoret', 20, NULL, 0, '2019-07-29 10:56:28', '2019-07-29 10:56:28'),
+(32, 'sda nakuru', 'nakuru', 8, NULL, 1, '2019-07-29 10:56:07', '2019-08-03 04:20:11'),
+(33, 'nairobi pariish', 'eldoret', 20, NULL, 1, '2019-07-29 10:56:28', '2019-08-03 04:20:21'),
 (34, 'nestle', 'eldoret', 9, NULL, 0, '2019-07-29 10:56:44', '2019-07-29 10:56:44'),
-(35, 'kisimu miky', 'kisumu', 27, NULL, 0, '2019-07-29 15:51:46', '2019-07-29 15:51:46'),
+(35, 'kisimu miky', 'kisumu', 27, NULL, 1, '2019-07-29 15:51:46', '2019-08-03 04:56:11'),
 (36, 'shem shem', 'eldoret', 28, NULL, 0, '2019-07-29 15:52:16', '2019-07-29 15:52:16'),
 (37, 'Chelsea', 'eldoret', 30, NULL, 0, '2019-08-01 06:47:10', '2019-08-01 06:47:10');
 
@@ -524,16 +533,16 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `phone`, `type`, `bio`, `photo`, `week`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'SHEM nduati', 'nduatishem@gmail.com', '0715511302', 'admin', 'IT consultant', '1563779713.png', 0, NULL, '$2y$10$Mpyy3fOCS1S4Eh0YmkwnZOmzFqkZGthj9.3Yz7dA6c9UKjRedUX42', 'EiU4i1qqvpf5zfcZ7Rei3DDa4GQHVLbKCF0VHqGz1YwgZKLaITBH4B3jWP1g', '2019-07-17 09:07:18', '2019-07-22 04:15:13'),
 (5, 'admin', 'admin@admin.com', NULL, 'admin', 'Administrator', '1563686963.png', 0, NULL, '$2y$10$rGUxv1dYo8UQWMgfz0AKde6I2foQu4eAH5CCMHq2eG3hQiIWDC5Uq', NULL, '2019-07-17 13:43:04', '2019-07-21 02:29:26'),
-(6, 'sweet', 'sweet@gmail.com', '0715511302', 'guest', 'Nairobi pastor', '', 0, NULL, '$2y$10$lDk/oXCDRcO28jRtM6lBTOig4dkuM8BPTy2id4q.nrjlQ47RCSSGG', NULL, '2019-07-17 15:14:59', '2019-07-17 15:14:59'),
-(7, 'mesweet', 'mesweet@gmail.com', '0715511302', 'guest', 'sweet', '', 0, NULL, '$2y$10$8fWFb4OtNbkjSVL5wm0S4eAsPi.zbHvou6r09JGY/Bex9O6VVWmfy', NULL, '2019-07-17 15:17:42', '2019-07-17 15:17:42'),
+(6, 'sweet', 'sweet@gmail.com', '0715511302', 'guest', 'Nairobi pastor', '', 1, NULL, '$2y$10$lDk/oXCDRcO28jRtM6lBTOig4dkuM8BPTy2id4q.nrjlQ47RCSSGG', NULL, '2019-07-17 15:14:59', '2019-08-03 04:20:11'),
+(7, 'mesweet', 'mesweet@gmail.com', '0715511302', 'guest', 'sweet', '', 2, NULL, '$2y$10$8fWFb4OtNbkjSVL5wm0S4eAsPi.zbHvou6r09JGY/Bex9O6VVWmfy', NULL, '2019-07-17 15:17:42', '2019-08-03 04:56:11'),
 (8, 'sweet22', 'sweet2@gmail.com', NULL, 'pastor', 'sweet', '', 0, NULL, '$2y$10$YzshW5G5MfYgtoLQIpma9OWgsLqTTm0TCS6uMA6VxK96P0RQh6hTu', NULL, '2019-07-17 15:19:35', '2019-07-20 05:32:30'),
 (9, 'hope', 'hope@gmail.com', NULL, 'pastor', 'lecturer', '', 0, NULL, '$2y$10$vFa//XwITAYrv9iYE8gwcuIOby1LQLLZ8EOOt9EZerG1yhiOMDUDS', NULL, '2019-07-17 15:26:01', '2019-07-17 15:26:01'),
 (10, 'mac morgan', 'macnduatishem@gmail.com', '0715511302', 'guest', 'lecturer barton', '', 1, NULL, '$2y$10$jRMi6MIzWCCiPjL52FXG7.MNG5.LxSC84Op9J40dWTtMLSmddClLC', NULL, '2019-07-17 15:36:51', '2019-08-02 16:57:18'),
-(11, 'townhouse', 'town@gmail.com', '0715511302', 'guest', 'biology', '', 0, NULL, '$2y$10$WgC2Kxi6U4EFpNa7cYUIbO7oavEUpUWK7e2aDAGnZG96jxpTEK1zi', NULL, '2019-07-17 16:43:56', '2019-07-17 16:43:56'),
+(11, 'townhouse', 'town@gmail.com', '0715511302', 'guest', 'biology', '', 2, NULL, '$2y$10$WgC2Kxi6U4EFpNa7cYUIbO7oavEUpUWK7e2aDAGnZG96jxpTEK1zi', NULL, '2019-07-17 16:43:56', '2019-08-03 04:56:11'),
 (12, 'matin mut', 'matin@gmail.com', '0720547364', 'pastor', 'mato', '', 0, NULL, '$2y$10$RcJZs0QdQVvcDz6VwwT5N.eO6bbcwbgfCf1WMHWiJD1h8VagiwwAW', NULL, '2019-07-17 16:48:49', '2019-07-23 05:35:21'),
 (16, 'Muut', 'mut@gmail.com', '0722334454', 'pastor', 'Mac', '1563777789.png', 0, NULL, '$2y$10$DoEPNJ.rIQ6OO5YV4vtcJ.SMFAm83vVLwOe6ZDqr7agHUwNpL5GN.', NULL, '2019-07-18 10:32:59', '2019-07-22 03:43:09'),
 (17, 'macmilan', 'macmilan@gmail.com', '0717021671', 'pastor', 'SDA pastor Central conference', '1563778383.png', 0, NULL, '$2y$10$up7p3//L.j84ofHU4eVCweDXW/B3l6tfb8.kLLamAtnOoSPjEZkXi', NULL, '2019-07-18 10:34:43', '2019-07-22 07:36:20'),
-(18, 'wathera', 'waithera@gmail.com', '0712345678', 'guest', 'Uganda', '1563777532.jpeg', 0, NULL, '$2y$10$Mkg4EmdyH5UN2fh1a2dHee6IA/o833HxHUvqA1uILpgraDPK0gd1C', NULL, '2019-07-20 10:57:35', '2019-08-02 16:56:57'),
+(18, 'wathera', 'waithera@gmail.com', '0712345678', 'guest', 'Uganda', '1563777532.jpeg', 1, NULL, '$2y$10$Mkg4EmdyH5UN2fh1a2dHee6IA/o833HxHUvqA1uILpgraDPK0gd1C', NULL, '2019-07-20 10:57:35', '2019-08-03 04:20:21'),
 (19, 'PR. ONGAKI', 'ongaki@gmail.com', '0722592432', 'pastor', 'Green valley pastor', '1563960821.png', 0, NULL, '$2y$10$5hXjMk7v3R2q8bggTWYs3uy8tnk8UD0A7BcMu8VjU0PsulrunP89y', NULL, '2019-07-23 10:58:43', '2019-07-24 06:33:42'),
 (20, 'PR. MUNUVE J', 'munuve@gmail.com', '0721439712', 'pastor', 'Baraka pastor', '', 0, NULL, '$2y$10$jgh4/zy3nxbHsE/FYJ.gue9A/6mVFJzTYOwkwDxu4Z75WiOaCiMzW', NULL, '2019-07-23 11:04:35', '2019-07-23 11:07:41'),
 (21, 'PR. GITHINJI WILLSON', 'githinji@gmail.com', '0721483704', 'pastor', 'Mt.view pastor', '', 0, NULL, '$2y$10$oBlq/o3TZRyjjsvvyW8MPObprEXW.EjWakK/rF6Uf7rzSeDTb64Qq', NULL, '2019-07-23 11:10:00', '2019-07-23 11:10:00'),
@@ -545,7 +554,7 @@ INSERT INTO `users` (`id`, `name`, `email`, `phone`, `type`, `bio`, `photo`, `we
 (27, 'miky', 'miky@gmail.com', NULL, 'pastor', NULL, 'profile.png', 0, NULL, '$2y$10$obEg5Mx3QO.XW2bJH6gc5eUU/MdbUom7hiq99nZ7TQfSrzt1U2r7y', NULL, '2019-07-29 15:44:59', '2019-07-29 15:44:59'),
 (28, 'shem', 'shem2@gmail.com', NULL, 'pastor', NULL, 'profile.png', 0, NULL, '$2y$10$mw0V00w8vlmp9fpZ7emAaun4fM1gDfbDrNw3E/EkHtCQi5XmGGVXK', NULL, '2019-07-29 15:48:24', '2019-07-29 15:48:24'),
 (29, 'shem', 'shem@gmail.com', NULL, 'pastor', NULL, 'profile.png', 0, NULL, '$2y$10$kafo69VMl1W7yjcrZtPsS.srHwjUrvqQ2loQ/Ij8q7E0LOULUwbJK', NULL, '2019-08-01 05:24:13', '2019-08-01 05:24:13'),
-(30, 'DeKa', 'deka@gmail.com', '0715810055', 'pastor', 'I am awesome', 'profile.png', 0, NULL, '$2y$10$zrOhOumrSJLA7.JFp3S4Ae6ooYDqPblqsLbnuEO3Cte5WLYxRGLAi', NULL, '2019-08-01 06:46:32', '2019-08-01 06:46:32');
+(30, 'DeKa', 'deka@gmail.com', '0715810055', 'admin', 'I am awesome', 'profile.png', 0, NULL, '$2y$10$zrOhOumrSJLA7.JFp3S4Ae6ooYDqPblqsLbnuEO3Cte5WLYxRGLAi', NULL, '2019-08-01 06:46:32', '2019-08-01 06:46:32');
 
 --
 -- Indexes for dumped tables
@@ -708,13 +717,13 @@ ALTER TABLE `books`
 -- AUTO_INCREMENT for table `calendars`
 --
 ALTER TABLE `calendars`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `camping`
 --
 ALTER TABLE `camping`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `claims`

@@ -7,11 +7,11 @@
                         <h3 class="card-title">Camp Meeting</h3>
 
                         <div class="card-tools">
-                            <button type="button" class="btn btn-danger" @click="reset()">
+                            <button v-if="$gate.isAdmin()" type="button" class="btn btn-danger" @click="reset()">
                                 <i class="fa fa-retweet"></i>
                                 Reset
                             </button>
-                            <button type="button" class="btn btn-primary" @click="newModal">
+                            <button v-if="$gate.isAdmin()" type="button" class="btn btn-primary" @click="newModal">
                                 <i class="fa fa-pen"></i>
                                 Compose
                             </button>
@@ -62,15 +62,20 @@
                     <form @submit.prevent="makeGeneration()">
                         <div class="modal-body">
                             <div class="form-group">
+                                <label for="event">Event</label>
+                                <select v-model="form.event" class="form-control" name="event" id="event"
+                                        :class="{ 'is-invalid': form.errors.has('event') }" @change="getEventWeeks()">
+                                    <option selected value="">--Select Event--</option>
+                                    <option v-for="act in Active" :key="act.id" :value="act.id">{{ act.event_name}}</option>
+                                </select>
+                                <has-error :form="form" field="event"></has-error>
+                            </div>
+                            <div class="form-group">
                                 <label for="week">Week</label>
                                 <select v-model="form.week" class="form-control" name="week" id="week"
                                         :class="{ 'is-invalid': form.errors.has('week') }">
                                     <option selected value="">--Select Week--</option>
-                                    <option value="1">Week 1</option>
-                                    <option value="2">Week 2</option>
-                                    <option value="3">Week 3</option>
-                                    <option value="4">Week 4</option>
-                                    <option value="5">Week 5</option>
+                                    <option v-for="we in eventWeeks" :key="we.id" :value="we.id">{{ we.week_name}}</option>
                                 </select>
                                 <has-error :form="form" field="week"></has-error>
                             </div>
@@ -111,12 +116,16 @@
             return {
                 editMode: false,
                 churches: {},
+                Active: {},
                 weeks: {},
+                eventWeeks: {},
+                campDetails: {},
                 form: new Form({
                     id: '',
                     week: '',
                     church: '',
                     no_guests: '',
+                    event: ''
                 })
             }
         },
@@ -175,14 +184,23 @@
                           
                         })
                     })
-            }
+            },
+            activeEvents(){
+                axios.get("/api/activeevents").then(({ data }) => (this.Active = data['events']));
+            },
+            getEventWeeks(){
+                 axios.get("/api/geteventweeks/" + this.form.event).then(({ data }) => ([this.eventWeeks = data['week']]));
+            },
+            
         },
         created() {
             this.getChurches();
             this.loadWeeks();
+            this. activeEvents();
             Fire.$on('AfterCreate', () => {
                 this.getChurches();
                 this.loadWeeks();
+                this. activeEvents();
                 
             });
         }

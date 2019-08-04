@@ -1,8 +1,25 @@
 <template>
     <div class="container-fluid">
-        <div class="row mt-5">
+        <div class="row mt-5" v-if="$gate.isPastor()">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Contribution</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-primary" @click="newModal">
+                                <i class="fa fa-donate"></i>
+                                Make Contribution
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" style="background-color: white; padding: 20px; margin-bottom: 20px;">
+                    <h3>My Church(es)</h3>
+                <div class="card" v-for="stat in stats" :key="stat.id">
+                    <div class="card-header">
+                        <b>{{stat.church_name}}</b>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 col-sm-6 col-md-4">
@@ -13,7 +30,7 @@
                 <span class="info-box-text">Target</span>
                 <span class="info-box-number">
                     <small>Ksh. </small>
-                  {{stats['target']}}
+                  {{stat.target}}
                   
                 </span>
               </div>
@@ -24,13 +41,13 @@
 
             <div class="col-12 col-sm-6 col-md-4">
             <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-hand-holding-usd"></i></span>
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-hand-holding-usd"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Contribution</span>
                 <span class="info-box-number">
                      <small>Ksh. </small>
-                  {{stats['total_contributed']}}
+                  {{stat.total_contributed}}
                   
                 </span>
               </div>
@@ -41,12 +58,12 @@
 
             <div class="col-12 col-sm-6 col-md-4">
             <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-percent"></i></span>
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-percent"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Percentage</span>
                 <span class="info-box-number">
-                  {{stats['percentage']}}
+                  {{stat.percentage}}
                   <small>%</small>
                 </span>
               </div>
@@ -57,23 +74,18 @@
                         </div>
                     </div>
                 </div>
+            </div>
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Contribution</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-primary" @click="newModal">
-                                <i class="fa fa-pencil"></i>
-                                Compose
-                            </button>
-                        </div>
+                        <h3 class="card-title">Contributions</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>Amount Goal</th>
+                                <th>Church</th>
+                                <th>Amount</th>
                                 <th>Date</th>
                                 <th>Modify</th>
                                
@@ -82,8 +94,9 @@
                             </thead>
                             <tbody>
                             <tr v-for="contrib in mycontributions" :key="contrib.id">
+                                <td>{{ contrib.church }}</td>   
                                 <td>{{ contrib.amount }}</td>                               
-                                <td>{{ contrib.created_at }}</td>
+                                <td>{{ contrib.date | myDate }}</td>
 
                                    <td> 
                                     <button type="button" class="btn btn-sm btn-primary" @click="editModal(contrib)">
@@ -116,6 +129,15 @@
                     <form @submit.prevent="editMode ? editMessage() :postContribution()">
                         <div class="modal-body">
                            
+                           <div class="form-group">
+                                <label for="church">church</label>
+                                <select v-model="form.church" class="form-control" name="church" id="church"
+                                        :class="{ 'is-invalid': form.errors.has('church') }">
+                                    <option selected value="">--Select Church--</option>
+                                    <option v-for="church in churches" :key="church.id" :value="church.id">{{ church.name}}</option>
+                                </select>
+                                <has-error :form="form" field="church"></has-error>
+                            </div>
                             <div class="form-group">
                                 <label for="amount">Amount Goal </label>
                                 <input v-model="form.amount" type="text" class="form-control" name="amount" id="amount"
@@ -159,6 +181,7 @@
                 form: new Form({
                     id: '',
                     amount: '',
+                    church: ''
                 })
             }
         },
@@ -219,10 +242,13 @@
                 })
             },
             loadContributions() {
-                axios.get("/api/mycontribution").then(({data}) => (this.mycontributions = data['mycont']));
+                axios.get("/api/mycontribution").then(({data}) => (this.mycontributions = data['mycontrib']));
             },
             loadStats() {
                 axios.get("/api/mystats").then(({data}) => (this.stats = data['details']));
+            },
+            loadChurches() {
+                axios.get("api/mychurches").then(({ data }) => ([this.churches = data['churches']]));
             },
             postContribution() {
                 this.$Progress.start();
@@ -244,6 +270,7 @@
         created() {
             this.loadContributions();
             this.loadStats();
+            this.loadChurches();
             Fire.$on('AfterCreate', () => {
                 this.loadContributions();
                 this.loadStats();

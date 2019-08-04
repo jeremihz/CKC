@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Camping;
 use App\Ministries;
+use App\CampWeeks;
+use App\Calendar;
 
 class CampingController extends Controller
 {
@@ -62,7 +64,8 @@ class CampingController extends Controller
         $this->validate($request, [
             'week' => 'required',
             'church' => 'required',
-            'no_guests' => 'required'
+            'no_guests' => 'required',
+            'event' => 'required'
         ]);
 
         $week = $request['week'];
@@ -93,6 +96,7 @@ class CampingController extends Controller
                     $camping->user_id = $guest['id'];
                     $camping->church_id = $church;
                     $camping->name = $name;
+                    $camping->event_id = $request['event'];
                     $camping->phone = $phone;
                     $camping->week = $week;
 
@@ -146,9 +150,24 @@ class CampingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function getEventWeeks($theevent)
     {
-        //
+        $week = CampWeeks::where('event_id', $theevent)->get();
+        return ['week'=>$week];
+    }
+
+    public function getCampDetails()
+    {
+        $bigevent = Calendar::where('status', 1)->first();
+         
+        return ['bigevent'=>$bigevent];
+    }
+
+    public function getWeek($dt){
+        $bigevent = Calendar::where('status', 1)->first();
+        $weekdet = CampWeeks::where('event_id', $bigevent['id'])->where('week', $dt)->first();
+
+        return ['weekdet'=> $weekdet];
     }
 
     /**

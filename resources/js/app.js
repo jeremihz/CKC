@@ -12,6 +12,8 @@ Vue.component('example', require('./components/FileUpload.vue'));
 Vue.component('image-component', require('./components/ImageuploadComponent.vue'));
 import moment from 'moment';
 import { Form, HasError, AlertError } from 'vform';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 import  Gate from "./Gate";
 Vue.prototype.$gate =  new Gate(window.user);
@@ -19,6 +21,8 @@ Vue.prototype.$gate =  new Gate(window.user);
 import swal from 'sweetalert2';
 
 window.swal = swal;
+
+window.jsPDF = jsPDF;
 
 const toast = swal.mixin({
     toast: true,
@@ -54,20 +58,21 @@ let routes = [
     { path: '/pastors', component: require('./components/pastors.vue').default },
     { path: '/church', component: require('./components/church.vue').default },
     { path: '/membership', component: require('./components/churchprofile.vue').default },
-    {path: '/communication', component: require('./components/Communication.vue').default},
-    {path: '/claims-admin', component: require('./components/ClaimsAdmin.vue').default},
-    {path: '/claim_details/:ministryId', component: require('./components/ClaimDetails.vue').default},
-    {path: '/claims', component: require('./components/CampClaims.vue').default},
-    {path: '/notice', component: require('./components/Notice.vue').default},
+    { path: '/communication', component: require('./components/Communication.vue').default},
+    { path: '/claims-admin', component: require('./components/ClaimsAdmin.vue').default},
+    { path: '/claim_details/:ministryId', component: require('./components/ClaimDetails.vue').default},
+    { path: '/claims', component: require('./components/CampClaims.vue').default},
+    { path: '/notice', component: require('./components/Notice.vue').default},
     { path: '/calendar-component', component: require('./components/CalendarComponent.vue').default },
     { path: '/contribution', component: require('./components/Contribution.vue').default },
     { path: '/image-component', component: require('./components/ImageuploadComponent.vue').default },
-     { path: '/upload', component: require('./components/ImageUploadComponent2.vue').default },
-     { path: '/contributiondetails', component: require('./components/ContributionDetails.vue').default },
-     { path: '/contributionpastor', component: require('./components/Contributionpastor.vue').default },
-     { path: '/church-contributions/:churchId', component: require('./components/ChurchContributions.vue').default },
-     { path: '/campmeeting', component: require('./components/CampMeeting.vue').default },
+    { path: '/upload', component: require('./components/ImageUploadComponent2.vue').default },
+    { path: '/contributiondetails', component: require('./components/ContributionDetails.vue').default },
+    { path: '/contributionpastor', component: require('./components/Contributionpastor.vue').default },
+    { path: '/church-contributions/:churchId', component: require('./components/ChurchContributions.vue').default },
+    { path: '/campmeeting', component: require('./components/CampMeeting.vue').default },
     { path: '/weekdetails/:week', component: require('./components/CampDetails.vue').default },
+    { path: '/viewevents', component: require('./components/ViewEvents.vue').default },
     { path: '*', component: require('./components/NotFound.vue').default },
 ]
 const router = new VueRouter({

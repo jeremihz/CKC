@@ -54,41 +54,85 @@ public function __construct()
      public function storepastor(Request $request)
     {
         $this->validate($request, [
-            'amount' => 'required'
+            'amount' => 'required',
+            'church' => 'required',
         ]);
 
-        $church_id = Ministries::where('pastor', auth()->user()->id)->value('id');
         $type = 'Contribution';
 
         return Contribution::create([
-            'church_id' => $church_id,
+            'church_id' => $request['church'],
             'type' =>$type,
             'amount' => $request['amount'],
+            'user_id'=> auth()->user()->id,
         ]);
     }
 
     public function getStats(){
-        $church_id = Ministries::where('pastor', auth()->user()->id)->value('id');
-        $church_con = Contribution::where('church_id', $church_id)->where('type', 'Contribution')->get();
-        $total_contributed = collect($church_con)->where('type', 'Contribution')->sum('amount');
-        $target = Contribution::where('church_id', $church_id)->where('type', 'Target')->value('amount');
-        $perc = ($total_contributed/$target)*100;
-        $percentage = round($perc,2);
+        // $church_id = Ministries::where('pastor', auth()->user()->id)->value('id');
+        // $church_con = Contribution::where('church_id', $church_id)->where('type', 'Contribution')->get();
+        // $total_contributed = collect($church_con)->where('type', 'Contribution')->sum('amount');
+        // $target = Contribution::where('church_id', $church_id)->where('type', 'Target')->value('amount');
+        // $perc = ($total_contributed/$target)*100;
+        // $percentage = round($perc,2);
 
-        $details = array(
-            'total_contributed' => $total_contributed, 
-            'target' => $target,
-            'percentage' => $percentage
-        );
+        // $details = array(
+        //     'total_contributed' => $total_contributed, 
+        //     'target' => $target,
+        //     'percentage' => $percentage
+        // );
+
+        // return ['details'=> $details];
+
+        $churches = Ministries::where('pastor', auth()->user()->id)->get();
+        $details = array();
+
+        foreach ($churches as $church) {
+            $church_name = $church['name'];
+            $church_con = Contribution::where('church_id', $church['id'])->where('type', 'Contribution')->get();
+            $total_contributed = collect($church_con)->where('type', 'Contribution')->sum('amount');
+            $target = Contribution::where('church_id', $church['id'])->where('type', 'Target')->value('amount');
+            $perc = ($total_contributed/$target)*100;
+            $percentage = round($perc,2);
+
+            $det = array(
+             'total_contributed' => $total_contributed, 
+             'target' => $target,
+             'percentage' => $percentage,
+             'church_name' => $church_name
+            );
+            array_push($details, $det);
+        }
 
         return ['details'=> $details];
     }
 
-    public function mycontribution(){
-        $church_id = Ministries::where('pastor', auth()->user()->id)->value('id');
-        $mycont = Contribution::where('church_id', $church_id)->where('type', 'Contribution')->get();
+    public function myChurches(){
+        $churches = Ministries::where('pastor', auth()->user()->id)->get();
+        
+        return ['churches'=> $churches];
+    }
 
-        return ['mycont'=> $mycont];
+    public function mycontribution(){
+        // $church_id = Ministries::where('pastor', auth()->user()->id)->value('id');
+        $myconts = Contribution::where('user_id', auth()->user()->id)->where('type', 'Contribution')->get();
+        $mycontrib = array();
+
+        foreach ($myconts as $mycont) {
+            $amount = $mycont['amount'];
+            $date = $mycont['created_at'];
+            $church = Ministries::where('id', $mycont['church_id'])->value('name');
+
+            $cont = array(
+              'amount'=>$amount,
+              'date'=>$date,
+              'church'=>$church,
+            );
+
+            array_push($mycontrib, $cont);
+        }
+
+        return ['mycontrib'=> $mycontrib];
     }
     
 

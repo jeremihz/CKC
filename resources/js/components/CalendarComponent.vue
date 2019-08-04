@@ -1,11 +1,19 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-8" v-if="$gate.isAdmin()">
         <form @submit.prevent>
           <div class="form-group">
             <label for="event_name">Event Name</label>
             <input type="text" id="event_name" class="form-control" v-model="newEvent.event_name">
+          </div>
+           <div class="form-group">
+            <label for="event_name">Theme</label>
+            <input type="text" id="theme" class="form-control" v-model="newEvent.theme">
+          </div>
+          <div class="form-group">
+            <label for="event_name">Theme Song</label>
+            <input type="text" id="theme_song" class="form-control" v-model="newEvent.theme_song">
           </div>
           <div class="row">
             <div class="col-md-6">
@@ -62,7 +70,9 @@ export default {
       newEvent: {
         event_name: "",
         start_date: "",
-        end_date: ""
+        end_date: "",
+        theme:"",
+        theme_song: ""
       },
       addingMode: true,
       indexToUpdate: ""
