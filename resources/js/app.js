@@ -19,6 +19,9 @@ import  Gate from "./Gate";
 Vue.prototype.$gate =  new Gate(window.user);
 
 import swal from 'sweetalert2';
+import ReadMore from 'vue-read-more';
+ 
+ Vue.use(ReadMore);
 
 window.swal = swal;
 

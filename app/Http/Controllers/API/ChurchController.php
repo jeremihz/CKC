@@ -58,8 +58,8 @@ class ChurchController extends Controller
     public function profile()
     {
         $user = auth()->user()->id;
-        $church = Ministries::where('pastor', $user)->first();
-        return $church;
+        $church = Ministries::where('pastor', $user)->get();
+        return ['church'=>$church];
 
     }
 

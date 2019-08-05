@@ -10,18 +10,15 @@
 
                         </div>
                         <div class="card-body p-0">
-                             <div class="row justify-content-center">
-                                 <div class="col-md-10">
-                                     <div class="card card-primary card-outline" v-for="mes in messages" :key="mes.id">
-                                         <div class="card-body" style="padding-bottom: 15px;">
-                                             <h5 class="card-title">{{ mes.title }}</h5>
-                                             <small style="color: #3e63d5;">{{ mes.created_at }}</small>
+                             <div class="row">
+                                 <div class="col-md-6" v-for="mes in messages" :key="mes.id">
 
-                                             <p class="card-text">
-                                                 {{ mes.message }}
-                                             </p>
-                                         </div>
-                                     </div>
+                                    <div class="alert alert-success alert-dismissible">
+                                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                      <h5><i class="icon fas fa-info"></i><b>{{ mes.title }}</b></h5>
+                                      <small style="color: #fff;">{{ mes.created_at }}</small><br>
+                                      <read-more more-str="read more" :text="mes.message" link="#" less-str="read less" :max-chars="50"></read-more>
+                                    </div>
                                  </div>
                              </div>
                         </div>

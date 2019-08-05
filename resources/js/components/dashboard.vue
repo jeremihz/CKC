@@ -61,11 +61,16 @@
                     <!-- ./col -->
                 </div>
                 <div class="card" v-if="$gate.isAdmin()">
-                    <div class="card-body">
-                        <button type="button" class="btn btn-danger" @click="makeReset()">
+                    <div class="card-header">
+                        <h4>New Year Reset</h4>
+                    </div>
+                    <div class="card-body" style="padding: 20px;">
+                        <div class="row justify-content-center">
+                            <button type="button" class="btn btn-success btn-lg" @click="makeReset()">
                                 <i class="fa fa-retweet"></i>
                                 Reset
                             </button>
+                        </div>
                     </div>
                 </div>
                 <div class="row justify-content-center mt-5">
